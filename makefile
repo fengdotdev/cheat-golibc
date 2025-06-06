@@ -1,12 +1,19 @@
 VERSION = 0.0.1
 
 
-MODULE_NAME := github.com/fengdotdev/cheat-golibc
+MODULE_NAME = github.com/fengdotdev/cheat-golibc
 # native c library
-PATH_MYMATH := ./libc/mymath/mymath.c
+PATH_MYMATH = ./nativeclib/mymath/mymath.c
 
 # go library for c
-PATH_ECHOLIBC := ./ui/echolibc/echolibc.go
+PATH_ECHOLIBC = ./ui/echolibc/echolibc.go
+
+OUT_MYMATH = libmymath
+OUT_ECHOLIBC = libecho
+
+OUTPUT_DIR = ./outputs
+
+BUNPATH = examples/javascript/bunlibc
 
 # Core Libraries -------------------------------------------------------------------------------------
 
@@ -16,7 +23,7 @@ TRAITS = github.com/fengdotdev/golibs-traits
 TESTING = github.com/fengdotdev/golibs-testing
 
 
-.PHONY: sand init  fix get tag test playground sandbox examples vo_folder
+.PHONY: sand init  fix get tag test playground sandbox examples build build_echo_linux
 
 sand: 
 	go run cmd/playground/main.go
@@ -48,25 +55,28 @@ test:
 
 
 
+build:	clearOutput  buildlinux
+
+clearOutput:
+	rm -rf ${OUTPUT_DIR}/*
+	mkdir -p ${OUTPUT_DIR}
 
 
-
-
+bun:
+	cd ${BUNPATH} && bun run index.ts
 
 # Build libc libraries 
 
-
-
 # in linux 
+buildlinux: build_echo_linux build_mymath_linux
 
 # for building the c library my math 
-buildC_mymathLinux:
-
+build_mymath_linux: 
+	gcc -shared -fPIC -o ${OUTPUT_DIR}/${OUT_MYMATH}.so ${PATH_MYMATH}
 	
-
-
-buildlinux:
-	GOOS=linux GOARCH=amd64 go build -o bin/libc.so -buildmode=c-shared ./libc
+# for building the go library echo
+build_echo_linux:
+	go build -o ${OUTPUT_DIR}/${OUT_ECHOLIBC}.so -buildmode=c-shared ${PATH_ECHOLIBC}
 
 
 

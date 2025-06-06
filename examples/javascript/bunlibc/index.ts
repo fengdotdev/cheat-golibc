@@ -1,17 +1,15 @@
-import { dlopen, FFIType, suffix } from "bun:ffi";
-
-
-const pathMyMath = `./libc/libmymath.${suffix}`;
-
-const libMyMath = dlopen(pathMyMath, {
-    add: {
-        args: [FFIType.int, FFIType.int],
-        returns: FFIType.int,
-    },
-});
-
-const result = libMyMath.symbols.add(10, 20);
+import { echoString } from "./echo";
+import { add } from "./mymath";
 
 
 
-console.log(`The result of adding 10 and 20 is: ${result}`); // Should print: The result of adding 10 and 20 is: 30
+
+let result: number = add(10, 20);
+
+console.log(`The result of adding 10 and 20 is: ${result}`); 
+
+
+let str: string= echoString("Hello, Bun FFI!");
+
+
+console.log(`The echoed string is: ${str}`);

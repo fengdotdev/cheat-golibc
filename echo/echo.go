@@ -1,10 +1,12 @@
 package echo
 
+import "fmt"
+
 // Echo functions for various types.
 
 // EchoString echoes a string.
 func EchoString(s string) string {
-	return s
+	return fmt.Sprintf("Echoed from go: %s", s)
 }
 
 // EchoInt echoes an int.

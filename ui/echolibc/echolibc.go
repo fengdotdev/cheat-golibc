@@ -1,4 +1,4 @@
-package echolibc
+package main
 
 import "C"
 
