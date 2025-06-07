@@ -25,6 +25,6 @@ func EchoBool(b bool) bool {
 }
 
 // EchoByteSlice echoes a byte slice.
-func EchoByteSlice(b []byte) []byte {
+func EchoBytes(b []byte) []byte {
 	return b
 }

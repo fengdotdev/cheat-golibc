@@ -1,12 +1,11 @@
-VERSION = 0.0.1
 
 
-MODULE_NAME = github.com/fengdotdev/cheat-golibc
+
 # native c library
 PATH_MYMATH = ./nativeclib/mymath/mymath.c
 
 # go library for c
-PATH_ECHOLIBC = ./ui/echolibc/echolibc.go
+PATH_ECHOLIBC = ./golibc/ui/echolibc/echolibc.go
 
 OUT_MYMATH = libmymath
 OUT_ECHOLIBC = libecho
@@ -14,6 +13,8 @@ OUT_ECHOLIBC = libecho
 OUTPUT_DIR = ./outputs
 
 BUNPATH = examples/javascript/bunlibc
+
+LIBC_FOLDER = libc
 
 # Core Libraries -------------------------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ sand:
 
 fix:	
 # fix the go.mod file
+	cd golibc
 	go mod tidy
 	go mod vendor
 	go mod verify
@@ -41,26 +43,33 @@ fix:
 
 # update the go.mod file with the latest dependencies
 get:
+	cd golibc
 	go get $(TRAITS)@latest
 	go get $(TESTING)@latest
 
-# update the version of the project
-tag:
-		git tag v${VERSION} && git push origin v${VERSION}
+
 
 # run all tests
 test:
+	cd golibc
 	go clean -testcache
 	go test -count=1 -v ./...
 
 
 
-build:	clearOutput  buildlinux
+build:	clearOutput  buildlinux copyout
 
 clearOutput:
 	rm -rf ${OUTPUT_DIR}/*
 	mkdir -p ${OUTPUT_DIR}
 
+
+
+copyout:
+# copy the contents of the output directory to the bunlibc folder
+	cp -r ${OUTPUT_DIR}/. ${BUNPATH}/${LIBC_FOLDER}
+
+# Run examples -------------------------------------------------------------------------------------
 
 bun:
 	cd ${BUNPATH} && bun run index.ts
@@ -76,6 +85,7 @@ build_mymath_linux:
 	
 # for building the go library echo
 build_echo_linux:
+	cd golibc
 	go build -o ${OUTPUT_DIR}/${OUT_ECHOLIBC}.so -buildmode=c-shared ${PATH_ECHOLIBC}
 
 

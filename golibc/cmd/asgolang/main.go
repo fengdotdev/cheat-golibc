@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/fengdotdev/cheat-golibc/echo"
+	"github.com/fengdotdev/cheat-golibc/golibc/echo"
 )
 
 func main() {

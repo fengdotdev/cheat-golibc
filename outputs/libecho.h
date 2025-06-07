@@ -75,6 +75,8 @@ extern "C" {
 #endif
 
 extern char* EchoString(char* s);
+extern int EchoInt(int i);
+extern void* EchoBytes(void* inputPtr, int inputSize, int* outputSize);
 
 #ifdef __cplusplus
 }
