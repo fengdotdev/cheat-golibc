@@ -12,9 +12,14 @@ OUT_ECHOLIBC = libecho
 
 OUTPUT_DIR = ./outputs
 
+LIBC_FOLDER = libc
+
+# runners
+CPATH = examples/c
+
 BUNPATH = examples/javascript/bunlibc
 
-LIBC_FOLDER = libc
+
 
 # Core Libraries -------------------------------------------------------------------------------------
 
@@ -67,12 +72,19 @@ clearOutput:
 
 copyout:
 # copy the contents of the output directory to the bunlibc folder
+
+# bun
 	cp -r ${OUTPUT_DIR}/. ${BUNPATH}/${LIBC_FOLDER}
+# c
+	cp -r ${OUTPUT_DIR}/. ${CPATH}/${LIBC_FOLDER}
 
 # Run examples -------------------------------------------------------------------------------------
 
 bun:
 	cd ${BUNPATH} && bun run index.ts
+
+c:
+	cd ${CPATH} && ./main
 
 # Build libc libraries 
 
